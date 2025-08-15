@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Master1 Airdrop Bot - Telegram Mining 24h</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+    }
+    body {
+      min-height: 100vh;
+      height: 100vh;
+      width: 100vw;
+      background: linear-gradient(135deg, #b2fefa 0%, #0ed2f7 100%);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: stretch;
+      box-sizing: border-box;
+    }
+    .ad-banner {
+      width: 100vw;
+      text-align: center;
+      padding: 8px 0;
+      background: linear-gradient(90deg,#f9d423 0,#ff4e50 100%);
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.04em;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 10px #ff4e5018;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      animation: fadeIn 1.2s;
+    }
+    .ad-banner a { color: #ffe; text-decoration: underline; }
+    .container {
+      flex: 1 1 auto;
+      height: 100vh;
+      width: 100vw;
+      max-width: none;
+      max-height: none;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 60px 0 100px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-y: auto;
+      background: transparent;
+      justify-content: center;
+    }
+    @media (max-width: 500px) {
+      .container { padding: 44px 0 70px 0;}
+    }
+    @keyframes fadeIn {
+      0% { transform: translateY(80px); opacity: 0;}
+      100% { transform: translateY(0); opacity: 1;}
+    }
+    @keyframes pop {
+      0% { transform: scale(1);}
+      60% { transform: scale(1.22);}
+      100% { transform: scale(1);}
+    }
+    .animate-pop { animation: pop 1s infinite alternate;}
+    .header {
+      color: #fff;
+      background: linear-gradient(90deg, #0088cc 40%, #0099ff 100%);
+      padding: 18px 0 18px 0;
+      border-radius: 12px;
+      width: 95vw;
+      max-width: 440px;
+      text-align: center;
+      font-size: 1.25em;
+      margin-bottom: 18px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 2px 14px #1aaaff15;
+    }
+    .header .coin-icon {
+      width: 38px;
+      margin-bottom: 3px;
+    }
+    .header .tag {
+      background: #fff;
+      color: #0088cc;
+      font-size: 0.85em;
+      border-radius: 8px;
+      padding: 3px 10px;
+      margin-left: 8px;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+    .balance-section {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 1.13em;
+      margin-top: 10px;
+    }
+    #balance {
+      font-weight: bold;
+      margin: 0 8px;
+      color: #0099ff;
+      font-size: 1.17em;
+      letter-spacing: 0.5px;
+    }
+    .unit {
+      color: #888;
+      font-size: 0.98em;
+    }
+    #mineBtn {
+      background: linear-gradient(90deg, #0088cc 50%, #00b3ff 100%);
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      padding: 15px 36px;
+      font-size: 1.08em;
+      margin: 20px 0 10px 0;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      outline: none;
+      font-weight: bold;
+      box-shadow: 0 3px 18px rgba(0,153,255,0.12);
+    }
+    #mineBtn:active { transform: scale(0.97);}
+    #mineBtn:disabled { background: #bbb; cursor: not-allowed;}
+    .timer {
+      color: #f00;
+      font-size: 1em;
+      margin: 5px 0 0 0;
+      height: 20px;
+    }
+    .info {
+      color: #555;
+      font-size: 0.98em;
+      margin-top: 9px;
+      text-align: center;
+    }
+    .task-section {
+      background: #f7fafd;
+      border-radius: 10px;
+      padding: 13px 12px 14px 12px;
+      margin: 22px 0 18px 0;
+      width: 95vw;
+      max-width: 420px;
+      box-shadow: 0 2px 8px #0099ff15;
+      text-align: center;
+    }
+    .task-section h3 {
+      margin: 0 0 10px 0;
+      color: #0088cc;
+      font-size: 1.07em;
+      text-align: left;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+    }
+    .task-link {
+      color: #0088cc;
+      text-decoration: none;
+      font-size: 1.07em;
+      font-weight: 500;
+    }
+    #claimTaskBtn {
+      margin-top: 8px;
+      background: #19a119;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 9px 18px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #claimTaskBtn:disabled { background: #bbb; cursor: not-allowed;}
+    #taskMsg {
+      margin-top: 6px;
+      font-size: 0.97em;
+      color: #19a119;
+    }
+    .referral-section {
+      background: #f7fafd;
+      border-radius: 10px;
+      padding: 13px 12px 14px 12px;
+      margin: 18px 0 8px 0;
+      width: 95vw;
+      max-width: 420px;
+      box-shadow: 0 2px 8px #0099ff15;
+    }
+    .referral-section h3 {
+      margin: 0 0 10px 0;
+      color: #0088cc;
+      font-size: 1.07em;
+      text-align: left;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+    }
+    #refCode {
+      font-family: monospace;
+      color: #0099ff;
+      font-size: 1.05em;
+      margin-left: 7px;
+      font-weight: 600;
+    }
+    #refLink {
+      width: 79%;
+      padding: 7px 8px;
+      border-radius: 6px;
+      border: 1px solid #bbb;
+      margin-top: 7px;
+      font-size: 0.96em;
+      background: #f1faff;
+    }
+    #copyRefBtn {
+      background: #1aaa19;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 7px 10px;
+      font-size: 1em;
+      margin-left: 5px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #copyRefBtn:hover { background: #008000;}
+    .ref-info {
+      color: #222;
+      font-size: 0.96em;
+      margin-top: 6px;
+    }
+    .withdraw-section {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .withdraw-section h3 {
+      margin: 0 0 10px 0;
+      color: #0088cc;
+      font-size: 1.06em;
+      font-weight: 600;
+    }
+    #withdrawForm {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      width: 100%;
+      align-items: center;
+    }
+    #withdrawForm input[type="number"],
+    #withdrawForm input[type="text"] {
+      width: 93%;
+      padding: 10px;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      font-size: 1em;
+    }
+    #withdrawForm button {
+      background: linear-gradient(90deg,#0088cc 50%,#1aaa19 100%);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 12px 0;
+      font-size: 1em;
+      font-weight: bold;
+      width: 93%;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #withdrawForm button:hover { background: #005f8a;}
+    #withdrawMessage {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 1em;
+    }
+    .success { color: #19a119;}
+    .error { color: #d8000c;}
+    .wallet-check {
+      margin-top: 18px;
+      background: #f3f7fa;
+      padding: 11px 10px;
+      border-radius: 7px;
+      font-size: 0.98em;
+      text-align: center;
+    }
+    #contactAddress {
+      color: #0099ff;
+      font-family: monospace;
+      font-size: 1em;
+    }
+    .bscscan-link { text-decoration: none;}
+    .bscscan-btn {
+      margin-top: 7px;
+      background: #f0b90b;
+      color: #222;
+      border: none;
+      border-radius: 5px;
+      padding: 7px 16px;
+      font-size: 0.97em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .bscscan-btn:hover { background: #e0a800;}
+    #lastWithdrawal {
+      margin-top: 8px;
+      color: #1aaa19;
+      font-size: 0.97em;
+    }
+    .ad-footer {
+      width: 100vw;
+      text-align: center;
+      padding: 12px 0;
+      background: linear-gradient(90deg,#0088cc 0,#0ed2f7 100%);
+      color: #fff;
+      font-size: 1.07em;
+      font-weight: 500;
+      letter-spacing: 1px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      z-index: 10;
+    }
+    .ad-footer a {
+      color: #ffd700;
+      text-decoration: underline;
+    }
+    #toast {
+      position: fixed;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 185px;
+      background: #272727ee;
+      color: #fff;
+      padding: 15px 24px;
+      border-radius: 9px;
+      z-index: 1000;
+      opacity: 0;
+      font-size: 1.05em;
+      transition: opacity 0.3s, bottom 0.3s;
+      pointer-events: none;
+      text-align: center;
+    }
+    #toast.show {
+      opacity: 1;
+      bottom: 110px;
+    }
+    hr {
+      margin:24px 0 18px 0; width:90%; border:1px solid #eee;
+    }
+  </style>
+</head>
+<body>
+  <div class="ad-banner">
+    <i class="fa-solid fa-bullhorn"></i> Join the daily task: 
+    <a href="https://t.me/Coinmaster1_A" target="_blank">@Coinmaster1_A</a>
+  </div>
+  <div class="container">
+    <div class="header">
+      <img src="https://cdn-icons-png.flaticon.com/512/825/825519.png" alt="Coin" class="coin-icon animate-pop">
+      Master1 Airdrop Bot
+      <span class="tag">Telegram Mining 24h</span>
+    </div>
+    <div class="balance-section">
+      <div>Balance:</div>
+      <div id="balance">0.00</div>
+      <div class="unit">MST</div>
+    </div>
+    <div class="timer" id="timer"></div>
+    <button id="mineBtn"><i class="fa-solid fa-hammer"></i> Mine Now</button>
+    <div class="info">
+      <i class="fa-solid fa-circle-info"></i>
+      Mine every 24 hours. Each tap gives you <b>10 MST</b>!
+    </div>
+
+    <div class="task-section">
+      <h3><i class="fa-solid fa-list-check"></i> Daily Task</h3>
+      <a href="https://t.me/Coinmaster1_A" class="task-link" target="_blank">
+        <i class="fa-brands fa-telegram"></i> Join Telegram for daily rewards!
+      </a>
+      <button id="claimTaskBtn">Claim Daily Task (+8 MST)</button>
+      <div id="taskMsg"></div>
+    </div>
+
+    <div class="referral-section">
+      <h3><i class="fa-solid fa-user-group"></i> Referral</h3>
+      <div>Your code: <span id="refCode"></span></div>
+      <div style="margin-top:6px;">
+        <input type="text" id="refLink" readonly>
+        <button id="copyRefBtn" title="Copy referral link"><i class="fa-solid fa-copy"></i></button>
+      </div>
+      <div class="ref-info">Share your link. You get <span style="color:#19a119;">+5 MST</span> per referral!</div>
+    </div>
+
+    <hr>
+
+    <div class="withdraw-section">
+      <h3><i class="fa-solid fa-money-bill-transfer"></i> Withdraw</h3>
+      <form id="withdrawForm">
+        <input type="number" id="withdrawAmount" placeholder="Amount (min 60 MST)" min="60" required>
+        <input type="text" id="wallet" placeholder="Your Trust Wallet Address" required>
+        <button type="submit"><i class="fa-solid fa-wallet"></i> Withdraw</button>
+      </form>
+      <div id="withdrawMessage"></div>
+      <div class="wallet-check">
+        <b>BNB Trust Wallet (master1)</b><br>
+        <span id="contactAddress">0x58cd4481fD7a20947598Bd7d76B68f4fa4ad8304</span><br>
+        <small>Symbol: <b>master1</b> | Decimals: <b>18</b></small><br>
+        <a 
+          href="https://bscscan.com/address/0x58cd4481fD7a20947598Bd7d76B68f4fa4ad8304"
+          target="_blank"
+          class="bscscan-link"
+        ><button type="button" class="bscscan-btn"><i class="fa-solid fa-link"></i> Check on BSCScan</button></a>
+        <div id="lastWithdrawal"></div>
+      </div>
+    </div>
+  </div>
+  <div id="toast"></div>
+  <div class="ad-footer">
+    <i class="fa-brands fa-telegram"></i> Join our <a href="https://t.me/Coinmaster1_A" target="_blank">Telegram Channel</a> & win!
+  </div>
+  <script>
+    // CONFIG
+    const COIN_PER_MINE = 10;
+    const ONE_DAY = 24 * 60 * 60 * 1000;
+    const REF_COIN = 5;
+    const MIN_WITHDRAW = 60;
+    const TASK_REWARD = 8;
+
+    // DOM
+    const balanceEl = document.getElementById('balance');
+    const mineBtn = document.getElementById('mineBtn');
+    const timerEl = document.getElementById('timer');
+    const withdrawForm = document.getElementById('withdrawForm');
+    const withdrawAmount = document.getElementById('withdrawAmount');
+    const walletInput = document.getElementById('wallet');
+    const withdrawMessage = document.getElementById('withdrawMessage');
+    const refCodeEl = document.getElementById('refCode');
+    const refLinkEl = document.getElementById('refLink');
+    const copyRefBtn = document.getElementById('copyRefBtn');
+    const toast = document.getElementById('toast');
+    const claimTaskBtn = document.getElementById('claimTaskBtn');
+    const taskMsg = document.getElementById('taskMsg');
+
+    // Helper Functions
+    function getUserId() {
+      let uid = localStorage.getItem('mst_uid');
+      if (!uid) {
+        uid = Math.random().toString(36).substring(2,10) + Date.now().toString(36).substring(4);
+        localStorage.setItem('mst_uid', uid);
+      }
+      return uid;
+    }
+    function getBalance() {
+      return parseFloat(localStorage.getItem('mst_balance') || "0");
+    }
+    function setBalance(val) {
+      localStorage.setItem('mst_balance', val.toFixed(2));
+      balanceEl.textContent = val.toFixed(2);
+    }
+    function getLastMine() {
+      return parseInt(localStorage.getItem('mst_lastmine') || "0");
+    }
+    function setLastMine(time) {
+      localStorage.setItem('mst_lastmine', time.toString());
+    }
+    function showToast(msg, icon="") {
+      toast.innerHTML = icon ? `<i class="${icon}"></i> ${msg}` : msg;
+      toast.className = "show";
+      setTimeout(()=>{toast.className="";}, 2500);
+    }
+
+    // Mining
+    function updateTimer() {
+      const now = Date.now();
+      const lastMine = getLastMine();
+      const nextMine = lastMine + ONE_DAY;
+      if (now >= nextMine || lastMine === 0) {
+        timerEl.textContent = "";
+        mineBtn.disabled = false;
+      } else {
+        mineBtn.disabled = true;
+        let remain = nextMine - now;
+        let h = Math.floor(remain / 1000 / 60 / 60);
+        let m = Math.floor((remain / 1000 / 60) % 60);
+        let s = Math.floor((remain / 1000) % 60);
+        timerEl.textContent = `Next mining in: ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      }
+    }
+    mineBtn.addEventListener('click', () => {
+      let balance = getBalance();
+      balance += COIN_PER_MINE;
+      setBalance(balance);
+      setLastMine(Date.now());
+      updateTimer();
+      showToast(`+${COIN_PER_MINE} MST mined!`, "fa-solid fa-coins");
+    });
+
+    // Referral
+    function setReferral() {
+      const myCode = getUserId();
+      refCodeEl.textContent = myCode;
+      let refLink = `${location.origin}${location.pathname}?ref=${myCode}`;
+      refLinkEl.value = refLink;
+    }
+    copyRefBtn.onclick = function(){
+      refLinkEl.select();
+      document.execCommand("copy");
+      showToast("Referral link copied!", "fa-solid fa-link");
+    };
+    function checkReferral() {
+      const params = new URLSearchParams(window.location.search);
+      const ref = params.get('ref');
+      const myId = getUserId();
+      let alreadyRewarded = localStorage.getItem('mst_ref_done');
+      if (ref && ref !== myId && !alreadyRewarded) {
+        localStorage.setItem('mst_ref_done', "1");
+        let refCount = localStorage.getItem('mst_ref_' + ref) || 0;
+        localStorage.setItem('mst_ref_' + ref, parseInt(refCount) + 1);
+        showToast("Referral bonus sent!", "fa-solid fa-gift");
+      }
+      let refMe = localStorage.getItem('mst_ref_' + myId) || 0;
+      if (refMe > 0) {
+        let bal = getBalance();
+        setBalance(bal + parseInt(refMe)*REF_COIN);
+        localStorage.setItem('mst_ref_' + myId, 0);
+        showToast(`+${parseInt(refMe)*REF_COIN} MST referral bonus!`, "fa-solid fa-gift");
+      }
+    }
+
+    // Daily Task
+    function updateTaskBtn() {
+      let lastTask = parseInt(localStorage.getItem('mst_last_task') || "0");
+      let now = Date.now();
+      if (now - lastTask > ONE_DAY) {
+        claimTaskBtn.disabled = false;
+        taskMsg.textContent = "";
+      } else {
+        claimTaskBtn.disabled = true;
+        let remain = ONE_DAY - (now - lastTask);
+        let h = Math.floor(remain / 1000 / 60 / 60);
+        let m = Math.floor((remain / 1000 / 60) % 60);
+        let s = Math.floor((remain / 1000) % 60);
+        taskMsg.textContent = `Next task in: ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      }
+    }
+    claimTaskBtn.onclick = function(){
+      setBalance(getBalance() + TASK_REWARD);
+      localStorage.setItem('mst_last_task', Date.now().toString());
+      updateTaskBtn();
+      showToast(`+${TASK_REWARD} MST daily task!`, "fa-solid fa-gift");
+    };
+    setInterval(updateTaskBtn, 1000);
+
+    // Withdrawal
+    withdrawForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const amount = parseFloat(withdrawAmount.value);
+      const wallet = walletInput.value.trim();
+      let balance = getBalance();
+
+      if (isNaN(amount) || amount < MIN_WITHDRAW) {
+        showWithdrawMessage("Minimum withdrawal is 60 MST.", "error");
+        showToast("Minimum withdrawal is 60 MST.", "fa-solid fa-exclamation-circle");
+        return;
+      }
+      if (!wallet || wallet.length < 10) {
+        showWithdrawMessage("Enter a valid Trust Wallet address.", "error");
+        showToast("Invalid wallet address.", "fa-solid fa-exclamation-triangle");
+        return;
+      }
+      if (amount > balance) {
+        showWithdrawMessage("Insufficient balance.", "error");
+        showToast("Insufficient balance.", "fa-solid fa-wallet");
+        return;
+      }
+
+      balance -= amount;
+      setBalance(balance);
+      let lastWithdraw = {amount, wallet, date: new Date().toLocaleString()};
+      localStorage.setItem('mst_last_withdraw', JSON.stringify(lastWithdraw));
+      showWithdrawMessage(`Withdrawal of ${amount} MST sent to <span style="font-size:0.99em;word-break:break-all;color:#0099ff">${wallet}</span>. Remaining balance: <b>${balance.toFixed(2)} MST</b>`, "success");
+      showToast("Withdrawal sent
